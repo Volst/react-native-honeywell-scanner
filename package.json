@@ -1,0 +1,8 @@
+{
+  "name": "react-native-honeywell-scanner",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Kees Kluskens <kees@volst.nl>",
+  "license": "MIT",
+  "private": false
+}
