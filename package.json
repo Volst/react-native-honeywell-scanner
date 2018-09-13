@@ -13,6 +13,10 @@
   "engines": {
     "node": ">=4.0"
   },
+  "files": [
+    "android",
+    "index.js"
+  ],
   "license": "ISC",
   "private": false
 }
