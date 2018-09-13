@@ -41,9 +41,11 @@ public class HoneywellScannerModule extends ReactContextBaseJavaModule implement
 
     private static BarcodeReader barcodeReader;
     private AidcManager manager;
+    private BarcodeReader reader;
     private ReactApplicationContext mReactContext;
-    private static final String BARCODE_READ = "barcodeRead";
 
+    private static final String BARCODE_READ_SUCCESS = "barcodeReadSuccess";
+    private static final String BARCODE_READ_FAIL = "barcodeReadFail";
 
     public HoneywellScannerModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -112,22 +114,20 @@ public class HoneywellScannerModule extends ReactContextBaseJavaModule implement
     }
 
     public void onBarcodeEvent(BarcodeReadEvent barcodeReadEvent) {
-        if (D) Log.d(TAG, "KEES - BARCODE SCAN SUCCESS");
+        if (D) Log.d(TAG, "HONEYWELLSCANNER - Barcode scan read");
         WritableMap params = Arguments.createMap();
         params.putString("code", barcodeReadEvent.getBarcodeData());
-        sendEvent(BARCODE_READ, params);
+        sendEvent(BARCODE_READ_SUCCESS, params);
     }
 
-    @Override
     public void onFailureEvent(BarcodeFailureEvent barcodeFailureEvent) {
-        if (D) Log.d(TAG, "KEES - Barcode scan failed");
+        if (D) Log.d(TAG, "HONEYWELLSCANNER - Barcode scan failed");
+        sendEvent(BARCODE_READ_FAIL, null);
     }
 
     /*******************************/
     /** Methods Available from JS **/
     /*******************************/
-
-    /*************************************/
 
     @ReactMethod
     public void startReader(Promise promise) {
@@ -135,12 +135,14 @@ public class HoneywellScannerModule extends ReactContextBaseJavaModule implement
             @Override
             public void onCreated(AidcManager aidcManager) {
                 manager = aidcManager;
-                barcodeReader = manager.createBarcodeReader();
-                if(barcodeReader != null){
-                    barcodeReader.addBarcodeListener(HoneywellScannerModule.this);
+                reader = manager.createBarcodeReader();
+                if(reader != null){
+                    reader.addBarcodeListener(HoneywellScannerModule.this);
                     try {
-                        barcodeReader.claim();
+                        reader.claim();
+                        promise.resolve(true);
                     } catch (ScannerUnavailableException e) {
+                        promise.resolve(false);
                         e.printStackTrace();
                     }
                 }
@@ -150,20 +152,12 @@ public class HoneywellScannerModule extends ReactContextBaseJavaModule implement
 
     @ReactMethod
     public void stopReader(Promise promise) {
-        AidcManager.create(mReactContext, new CreatedCallback() {
-            @Override
-            public void onCreated(AidcManager aidcManager) {
-                manager = aidcManager;
-                barcodeReader = manager.createBarcodeReader();
-                if(barcodeReader != null){
-                    barcodeReader.addBarcodeListener(HoneywellScannerModule.this);
-                    try {
-                        barcodeReader.claim();
-                    } catch (ScannerUnavailableException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        if (reader != null) {
+            reader.close();
+        }
+        if (manager != null) {
+            manager.close();
+        }
+        promise.resolve(null);
     }
 }
