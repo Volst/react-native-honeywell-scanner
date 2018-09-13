@@ -1,4 +1,4 @@
-package com.volst.HoneywellScanner;
+package nl.volst.HoneywellScanner;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,3 +1,3 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.volst.HoneywellScanner">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="nl.volst.HoneywellScanner">
     <uses-permission android:name="com.honeywell.decode.permission.DECODE" />
 </manifest>

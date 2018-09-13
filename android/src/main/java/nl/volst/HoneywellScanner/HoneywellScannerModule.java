@@ -1,4 +1,4 @@
-package com.volst.HoneywellScanner;
+package nl.volst.HoneywellScanner;
 
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -24,7 +24,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-import static com.volst.HoneywellScanner.HoneywellScannerPackage.TAG;
+import static nl.volst.HoneywellScanner.HoneywellScannerPackage.TAG;
 
 import com.honeywell.aidc.AidcManager;
 import com.honeywell.aidc.AidcManager.CreatedCallback;
@@ -49,22 +49,6 @@ public class HoneywellScannerModule extends ReactContextBaseJavaModule implement
         super(reactContext);
 
         mReactContext = reactContext;
-
-        AidcManager.create(mReactContext, new CreatedCallback() {
-            @Override
-            public void onCreated(AidcManager aidcManager) {
-                manager = aidcManager;
-                barcodeReader = manager.createBarcodeReader();
-                if(barcodeReader != null){
-                    barcodeReader.addBarcodeListener(HoneywellScannerModule.this);
-                    try {
-                        barcodeReader.claim();
-                    } catch (ScannerUnavailableException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
 
         mReactContext.addActivityEventListener(this);
         mReactContext.addLifecycleEventListener(this);
@@ -146,7 +130,40 @@ public class HoneywellScannerModule extends ReactContextBaseJavaModule implement
     /*************************************/
 
     @ReactMethod
-    public void requestEnable(Promise promise) {
-        promise.resolve(true);
+    public void startReader(Promise promise) {
+        AidcManager.create(mReactContext, new CreatedCallback() {
+            @Override
+            public void onCreated(AidcManager aidcManager) {
+                manager = aidcManager;
+                barcodeReader = manager.createBarcodeReader();
+                if(barcodeReader != null){
+                    barcodeReader.addBarcodeListener(HoneywellScannerModule.this);
+                    try {
+                        barcodeReader.claim();
+                    } catch (ScannerUnavailableException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void stopReader(Promise promise) {
+        AidcManager.create(mReactContext, new CreatedCallback() {
+            @Override
+            public void onCreated(AidcManager aidcManager) {
+                manager = aidcManager;
+                barcodeReader = manager.createBarcodeReader();
+                if(barcodeReader != null){
+                    barcodeReader.addBarcodeListener(HoneywellScannerModule.this);
+                    try {
+                        barcodeReader.claim();
+                    } catch (ScannerUnavailableException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 }
