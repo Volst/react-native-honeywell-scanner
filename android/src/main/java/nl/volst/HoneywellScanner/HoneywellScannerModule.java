@@ -9,14 +9,9 @@ import java.util.Map;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.util.Log;
-import android.util.Base64;
 
-import com.facebook.react.bridge.ActivityEventListener;
-import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -36,7 +31,7 @@ import com.honeywell.aidc.BarcodeReader;
 import com.honeywell.aidc.ScannerUnavailableException;
 
 @SuppressWarnings("unused")
-public class HoneywellScannerModule extends ReactContextBaseJavaModule implements ActivityEventListener, LifecycleEventListener, BarcodeReader.BarcodeListener {
+public class HoneywellScannerModule extends ReactContextBaseJavaModule implements BarcodeReader.BarcodeListener {
 
     // Debugging
     private static final boolean D = true;
@@ -53,10 +48,6 @@ public class HoneywellScannerModule extends ReactContextBaseJavaModule implement
         super(reactContext);
 
         mReactContext = reactContext;
-
-        mReactContext.addActivityEventListener(this);
-        mReactContext.addLifecycleEventListener(this);
-        
     }
 
     @Override
@@ -76,43 +67,6 @@ public class HoneywellScannerModule extends ReactContextBaseJavaModule implement
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(eventName, params);
         }
-    }
-
-
-    @Override
-    public void onNewIntent(Intent intent) {
-        if (D) Log.d(TAG, "On new intent");
-    }
-
-
-    @Override
-    public void onHostResume() {
-        if (D) Log.d(TAG, "Host resume");
-    }
-
-    @Override
-    public void onHostPause() {
-        if (D) Log.d(TAG, "Host pause");
-    }
-
-    @Override
-    public void onHostDestroy() {
-        if (D) Log.d(TAG, "Host destroy");
-        // TODO
-        // mBluetoothService.stop();
-    }
-
-    @Override
-    public void onCatalystInstanceDestroy() {
-        if (D) Log.d(TAG, "Catalyst instance destroyed");
-        super.onCatalystInstanceDestroy();
-        // TODO
-        // mBluetoothService.stop();
-    }
-
-    @Override
-    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent intent) {
-        if (D) Log.d(TAG, "On activity result request: " + requestCode + ", result: " + resultCode);
     }
 
     public void onBarcodeEvent(BarcodeReadEvent barcodeReadEvent) {

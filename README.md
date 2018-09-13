@@ -2,12 +2,6 @@
 
 This package works with Honeywell devices that have an integrated barcode scanner, like the Honeywell Dolphin CT50. This package was fully tested with a CT50, since the SDK is not specific to the CT50 other devices will likely work as well but this is not guaranteed.
 
-**TODO**:
-
-- Check if activity and lifecycle classes are necessary
-- Check if you need to manually add permissions
-- Publish on npm
-
 ## Installation
 
 ```
@@ -29,6 +23,7 @@ import HoneywellScanner from 'react-native-honeywell-scanner';
 
 HoneywellScanner.isCompatible // true or false
 ```
+
 The barcode reader needs to be "claimed" by your application; meanwhile no other application can use it. You can do that like this:
 
 ```js
