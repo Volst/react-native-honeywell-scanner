@@ -2,10 +2,6 @@ const ReactNative = require('react-native');
 const { NativeModules, DeviceEventEmitter } = ReactNative;
 const HoneywellScanner = NativeModules.HoneywellScanner;
 
-// TODO: don't know yet how to expose this natively from the Android module
-HoneywellScanner.BARCODE_READ_SUCCESS = 'barcodeReadSuccess';
-HoneywellScanner.BARCODE_READ_FAIL = 'barcodeReadFail';
-
 const allowedEvents = [
   HoneywellScanner.BARCODE_READ_SUCCESS,
   HoneywellScanner.BARCODE_READ_FAIL,

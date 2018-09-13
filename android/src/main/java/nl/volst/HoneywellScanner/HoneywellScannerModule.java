@@ -3,6 +3,8 @@ package nl.volst.HoneywellScanner;
 import java.lang.reflect.Method;
 import java.util.Set;
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -116,7 +118,7 @@ public class HoneywellScannerModule extends ReactContextBaseJavaModule implement
     public void onBarcodeEvent(BarcodeReadEvent barcodeReadEvent) {
         if (D) Log.d(TAG, "HONEYWELLSCANNER - Barcode scan read");
         WritableMap params = Arguments.createMap();
-        params.putString("code", barcodeReadEvent.getBarcodeData());
+        params.putString("data", barcodeReadEvent.getBarcodeData());
         sendEvent(BARCODE_READ_SUCCESS, params);
     }
 
@@ -130,7 +132,7 @@ public class HoneywellScannerModule extends ReactContextBaseJavaModule implement
     /*******************************/
 
     @ReactMethod
-    public void startReader(Promise promise) {
+    public void startReader(final Promise promise) {
         AidcManager.create(mReactContext, new CreatedCallback() {
             @Override
             public void onCreated(AidcManager aidcManager) {
@@ -160,4 +162,19 @@ public class HoneywellScannerModule extends ReactContextBaseJavaModule implement
         }
         promise.resolve(null);
     }
+
+    private boolean isCompatible() {
+        // This... is not optimal. Need to find a better way to performantly check whether device has a Honeywell scanner 
+        return Build.BRAND.toLowerCase().contains("honeywell");
+    }
+
+    @Override
+    public Map<String, Object> getConstants() {
+        final Map<String, Object> constants = new HashMap<>();
+        constants.put("BARCODE_READ_SUCCESS", BARCODE_READ_SUCCESS);
+        constants.put("BARCODE_READ_FAIL", BARCODE_READ_FAIL);
+        constants.put("isCompatible", isCompatible());
+        return constants;
+    }
+
 }
