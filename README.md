@@ -4,10 +4,9 @@ This package works with Honeywell devices that have an integrated barcode scanne
 
 **TODO**:
 
-- Add a function to determine whether device is a Honeywell Dolphin device. See https://stackoverflow.com/questions/31585811/android-honeywell-dolphin-how-to-detect-laser-scanner0
 - Check if activity and lifecycle classes are necessary
 - Check if you need to manually add permissions
-- Publish on GitHub
+- Publish on npm
 
 ## Installation
 
@@ -23,11 +22,16 @@ react-native link react-native-honeywell-scanner
 
 ## Usage
 
-The barcode reader needs to be "claimed" by your application; meanwhile no other application can use it. You can do that like this:
+First you'll want to check whether the device is a Honeywell scanner:
 
 ```js
 import HoneywellScanner from 'react-native-honeywell-scanner';
 
+HoneywellScanner.isCompatible // true or false
+```
+The barcode reader needs to be "claimed" by your application; meanwhile no other application can use it. You can do that like this:
+
+```js
 HoneywellScanner.startReader().then((claimed) => {
     console.log(claimed ? 'Barcode reader is claimed' : 'Barcode reader is busy');
 });
@@ -44,8 +48,8 @@ HoneywellScanner.stopReader().then(() => {
 To get events from the barcode scanner:
 
 ```js
-HoneywellScanner.on('barcodeReadSuccess', data => {
-    console.log('Received data', data);
+HoneywellScanner.on('barcodeReadSuccess', event => {
+    console.log('Received data', event);
 });
 
 HoneywellScanner.on('barcodeReadFail', () => {
