@@ -1,6 +1,6 @@
 const ReactNative = require('react-native');
 const { NativeModules, DeviceEventEmitter } = ReactNative;
-const HoneywellScanner = NativeModules.HoneywellScanner;
+const HoneywellScanner = NativeModules.HoneywellScanner || {}; // Hacky fallback for iOS
 
 const allowedEvents = [
   HoneywellScanner.BARCODE_READ_SUCCESS,
