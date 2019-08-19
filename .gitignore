@@ -2,3 +2,8 @@
 android/.project
 android/.classpath
 android/bin
+.idea
+*.iml
+local.properties
+build
+.gradle
