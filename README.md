@@ -1,5 +1,7 @@
 # React Native Honeywell Scanner
 
+> **This package is not maintained! [This fork](https://github.com/AMI3GOLtd/react-native-honeywell-scanner) might work better.**
+
 This package works with Honeywell devices that have an integrated barcode scanner, like the Honeywell Dolphin CT50. This package was fully tested with a CT50, since the SDK is not specific to the CT50 other devices will likely work as well but this is not guaranteed.
 
 **Tip**: Use [react-native-camera](https://github.com/react-native-community/react-native-camera) as fallback for devices that don't have an integrated scanner; it has an integrated barcode scanner by using the camera.
